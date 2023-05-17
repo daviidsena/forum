@@ -5,6 +5,7 @@ import br.com.senac.domain.forum.command.AskQuestionCommand;
 import br.com.senac.domain.forum.command.DisableQuestionCommand;
 import br.com.senac.domain.forum.controller.model.AnswerQuestion;
 import br.com.senac.domain.forum.controller.model.AskQuestion;
+import br.com.senac.domain.forum.query.FindQuestionAllQuery;
 import br.com.senac.domain.forum.query.FindQuestionQuery;
 import br.com.senac.domain.forum.query.view.AnswerView;
 import br.com.senac.domain.forum.query.view.QuestionView;
@@ -14,6 +15,7 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -43,6 +45,11 @@ public class ForumController {
 		return commandGateway.send(new DisableQuestionCommand(UUID.randomUUID()));
 	}
 
+	@GetMapping("/")
+	public CompletableFuture<List<QuestionView>> FindQuestion() {
+		return queryGateway.query(new FindQuestionAllQuery(), ResponseTypes.multipleInstancesOf(QuestionView.class));
+	}
+
 	@GetMapping("/{questionId}")
 	public CompletableFuture<QuestionView> FindQuestion(@PathVariable("questionId") String questionId) {
 		Assert.notNull(questionId, "'QuestionId' missing - please provide a question validated");
@@ -52,7 +59,7 @@ public class ForumController {
 		);
 	}
 
-	@PostMapping("/questions/{questionId}/answers/")
+	@PostMapping("/{questionId}/answers/")
 	public CompletableFuture<AnswerView> createAnswerQuestion(@PathVariable("questionId") String questionId, @RequestBody AnswerQuestion answerQuestion) {
 		Assert.notNull(questionId, "'QuestionId' missing - please provide a question");
 		Assert.notNull(answerQuestion.getDescription(), "'Description' missing - please provide a description");
@@ -61,7 +68,9 @@ public class ForumController {
 		return commandGateway.send(new AnswerQuestionCommand(
 										UUID.fromString(questionId),
 										UUID.randomUUID(),
-										UUID.fromString(answerQuestion.getAnswerParents()),
+										answerQuestion.getAnswerParents() != "" ?
+											UUID.fromString(answerQuestion.getAnswerParents())
+											: new UUID( 0 , 0 ),
 										answerQuestion.getDescription(),
 										"",
 										UUID.fromString(answerQuestion.getUserId())

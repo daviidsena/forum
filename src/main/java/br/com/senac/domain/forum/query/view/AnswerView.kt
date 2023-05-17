@@ -9,16 +9,22 @@ import javax.persistence.Id
 data class AnswerView (
     @Column(columnDefinition = "BINARY(16)")
     val questionId: UUID,
+
     @Column(columnDefinition = "BINARY(16)")
     @Id val answerId: UUID,
+
     @Column(columnDefinition = "BINARY(16)")
     val answerParentsId: UUID,
+
     val description: String,
     val status: String,
+
     @Column(columnDefinition = "BINARY(16)")
     val userId: UUID,
-    val like: Int,
-    val unlike: Int
+
+    val likeAnswer: Int,
+
+    val unlikeAnswer: Int,
 ) {
     constructor() : this(UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID(),"","", UUID.randomUUID(), 0, 0) {
     }

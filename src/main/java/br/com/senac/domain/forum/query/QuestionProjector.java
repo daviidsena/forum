@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.senac.domain.forum.event.QuestionCreatedEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,9 +35,11 @@ public class QuestionProjector {
 
 	@QueryHandler
 	public QuestionView handle(FindQuestionQuery query) {
-		Optional<QuestionView> test = Optional.ofNullable(questionViewRepository.findById(query.getQuestionId()).orElse(null));
-		QuestionView item = test.get();
+		return Optional.ofNullable(questionViewRepository.findById(query.getQuestionId()).orElse(null)).get();
+	}
 
-		return item;
+	@QueryHandler
+	public List<QuestionView> handle(FindQuestionAllQuery query) {
+		return questionViewRepository.findAll();
 	}
 }
