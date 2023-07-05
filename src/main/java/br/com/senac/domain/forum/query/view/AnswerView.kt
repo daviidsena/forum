@@ -1,5 +1,6 @@
 package br.com.senac.domain.forum.query.view
 
+import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -17,6 +18,7 @@ data class AnswerView (
     val answerParentsId: UUID,
 
     val description: String,
+
     val status: String,
 
     @Column(columnDefinition = "BINARY(16)")
@@ -25,8 +27,11 @@ data class AnswerView (
     val likeAnswer: Int,
 
     val unlikeAnswer: Int,
-) {
-    constructor() : this(UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID(),"","", UUID.randomUUID(), 0, 0) {
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
+
+    ) {
+    constructor() : this(UUID.randomUUID(),UUID.randomUUID(),UUID.randomUUID(),"","", UUID.randomUUID(), 0, 0, LocalDateTime.now(), LocalDateTime.now()) {
     }
 }
 

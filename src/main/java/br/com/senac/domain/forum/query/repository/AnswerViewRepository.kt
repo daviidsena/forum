@@ -4,4 +4,6 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface AnswerViewRepository: JpaRepository<AnswerView, UUID>
+interface AnswerViewRepository: JpaRepository<AnswerView, UUID>{
+    fun findByQuestionId(questionId: UUID): List<AnswerView>
+}

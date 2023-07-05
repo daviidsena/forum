@@ -1,5 +1,6 @@
 package br.com.senac.domain.forum.query.view;
 
+import java.time.LocalDateTime
 import java.util.UUID;
 import javax.persistence.*
 
@@ -14,7 +15,9 @@ data class QuestionView (
 	val userId: UUID,
 	@Column(columnDefinition = "BINARY(16)")
 	val chapterId: UUID,
+	val createdAt: LocalDateTime,
+	val updatedAt: LocalDateTime,
 ) {
-	constructor() : this(UUID.randomUUID(), ArrayList<UUID>(), String.toString(), String.toString(), UUID.randomUUID(), UUID.randomUUID()) {
+	constructor() : this(UUID.randomUUID(), ArrayList<UUID>(), String.toString(), String.toString(), UUID.randomUUID(), UUID.randomUUID(), LocalDateTime.now(), LocalDateTime.now()) {
 	}
 }

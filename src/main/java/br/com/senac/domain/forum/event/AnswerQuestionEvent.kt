@@ -1,6 +1,7 @@
 package br.com.senac.domain.forum.event
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
+import java.time.LocalDateTime
 import java.util.UUID
 
 data class AnswerQuestionEvent (
@@ -10,6 +11,8 @@ data class AnswerQuestionEvent (
 	val description: String,
 	val status : String,
 	val userId: UUID,
-	var like: Int,
-	var unlike: Int,
+	val like: Int,
+	val unlike: Int,
+	val createdAt: LocalDateTime,
+	val updatedAt: LocalDateTime
 )
